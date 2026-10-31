@@ -1,0 +1,9 @@
+# EPOMAKER x AULA F75 Max: give the logged-in user access to the interfaces the driver
+# uses, over USB (2: screen, 3: control) and through the 2.4G dongle (3). The
+# dongle reports an Apple keyboard's ID (05ac:024f): only its interface 3 is
+# opened, never the keystroke interfaces.
+SUBSYSTEM!="hidraw", GOTO="aula_f75_end"
+IMPORT{builtin}="usb_id"
+ENV{ID_VENDOR_ID}=="0c45", ENV{ID_MODEL_ID}=="800a", ENV{ID_USB_INTERFACE_NUM}=="02|03", TAG+="uaccess"
+ENV{ID_VENDOR_ID}=="05ac", ENV{ID_MODEL_ID}=="024f", ENV{ID_USB_INTERFACE_NUM}=="03", TAG+="uaccess"
+LABEL="aula_f75_end"

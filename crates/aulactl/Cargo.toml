@@ -1,0 +1,14 @@
+[package]
+name = "aulactl"
+description = "Command-line control for the EPOMAKER x AULA F75 Max keyboard"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+anyhow = "1"
+aula = { path = "../aula", features = ["gif"] }
+chrono = { version = "0.4", default-features = false, features = ["clock"] }
+clap = { version = "4", features = ["derive"] }

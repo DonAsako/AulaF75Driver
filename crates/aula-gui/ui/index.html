@@ -1,0 +1,227 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>AULA F75</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <!-- Text comes from js/locales through data-i18n. -->
+  <header class="titlebar">
+    <span class="product">AULA F75 Max</span>
+    <nav class="tabs" id="tabs" role="tablist">
+      <button role="tab" value="lighting" data-i18n="tab.lighting"></button>
+      <button role="tab" value="colors" data-i18n="tab.colors"></button>
+      <button role="tab" value="remap" data-i18n="tab.remap"></button>
+      <button role="tab" value="macros" data-i18n="tab.macros"></button>
+      <button role="tab" value="screen" data-i18n="tab.screen"></button>
+      <button role="tab" value="settings" data-i18n="tab.settings"></button>
+    </nav>
+    <div class="device">
+      <p class="status" id="status">
+        <span id="status-text" data-i18n="status.searching"></span>
+        <span class="battery" id="battery" hidden><span class="battery-icon"></span><span id="battery-text"></span></span>
+      </p>
+      <button class="icon" id="resync" data-device data-i18n-label="resync.button" data-i18n-title="resync.title">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.5 8a5.5 5.5 0 0 1-9.9 3.3M2.5 8a5.5 5.5 0 0 1 9.9-3.3"/><path d="M12.8 1.8v3h-3M3.2 14.2v-3h3"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="stage" id="stage">
+    <div class="case"><div class="board" id="board"></div></div>
+  </div>
+
+  <main>
+    <section class="page" data-page="lighting" hidden>
+      <div class="inspector split">
+        <div class="pane">
+          <h2 data-i18n="lighting.effect"></h2>
+          <div class="effects" id="effects" role="radiogroup"></div>
+        </div>
+        <div class="pane">
+          <h2 data-i18n="lighting.parameters"></h2>
+          <div class="prop"><label for="light-color" data-i18n="lighting.color"></label><input type="color" id="light-color"></div>
+          <div class="prop"><label for="light-colorful" data-i18n="lighting.colorful"></label><input type="checkbox" id="light-colorful"></div>
+          <div class="prop"><label for="light-brightness" data-i18n="lighting.brightness"></label><span class="range"><input type="range" id="light-brightness" min="0"><output></output></span></div>
+          <div class="prop"><label for="light-speed" data-i18n="lighting.speed"></label><span class="range"><input type="range" id="light-speed" min="0"><output></output></span></div>
+        </div>
+      </div>
+      <footer class="bar">
+        <p class="note" data-i18n="lighting.note"></p>
+        <button class="primary" id="light-apply" data-device data-i18n="lighting.apply"></button>
+      </footer>
+    </section>
+
+    <section class="page" data-page="colors" hidden>
+      <div class="inspector split">
+        <div class="pane">
+          <h2 data-i18n="colors.brush"></h2>
+          <div class="prop"><span data-i18n="colors.tool"></span>
+            <div class="segmented" id="paint-tool">
+              <button value="paint" data-i18n="colors.paint"></button>
+              <button value="erase" data-i18n="colors.erase"></button>
+            </div>
+          </div>
+          <div class="prop"><label for="paint-color" data-i18n="colors.color"></label><input type="color" id="paint-color" value="#3b5bfd"></div>
+          <div class="prop"><span data-i18n="colors.all"></span>
+            <div class="row">
+              <button id="colors-fill" data-i18n="colors.fill"></button>
+              <button id="colors-clear" data-i18n="colors.clear"></button>
+            </div>
+          </div>
+        </div>
+        <div class="pane">
+          <h2 data-i18n="colors.sending"></h2>
+          <div class="prop"><label for="colors-brightness" data-i18n="colors.brightness"></label><span class="range"><input type="range" id="colors-brightness" min="0"><output></output></span></div>
+        </div>
+      </div>
+      <footer class="bar">
+        <p class="note" data-i18n="colors.note"></p>
+        <button id="colors-read" data-device data-usb-only data-i18n="colors.read"></button>
+        <button class="primary" id="colors-apply" data-device data-i18n="colors.apply"></button>
+      </footer>
+    </section>
+
+    <section class="page" data-page="remap" hidden>
+      <div class="inspector split">
+        <div class="pane">
+          <h2 data-i18n="remap.selection"></h2>
+          <div class="prop"><span data-i18n="remap.layer"></span>
+            <div class="segmented" id="remap-layer">
+              <button value="base" data-i18n="remap.base"></button>
+              <button value="fn" data-i18n="remap.fn"></button>
+            </div>
+          </div>
+          <div class="prop"><span data-i18n="remap.key"></span>
+            <strong class="keycap" id="remap-key" hidden></strong>
+            <span class="muted" id="remap-no-key" data-i18n="remap.noKey"></span>
+          </div>
+        </div>
+        <div class="pane">
+          <h2 data-i18n="remap.action"></h2>
+          <div id="remap-action" hidden>
+            <div class="prop"><label for="remap-kind" data-i18n="remap.type"></label>
+              <select id="remap-kind">
+                <option value="default" data-i18n="kind.default"></option>
+                <option value="key" data-i18n="kind.key"></option>
+                <option value="consumer" data-i18n="kind.consumer"></option>
+                <option value="mouse" data-i18n="kind.mouse"></option>
+                <option value="multiKey" data-i18n="kind.multiKey"></option>
+                <option value="macro" data-i18n="kind.macro"></option>
+                <option value="disabled" data-i18n="kind.disabled"></option>
+              </select>
+            </div>
+            <div class="prop" data-for="key multiKey"><span data-i18n="remap.keys"></span><button class="capture" id="remap-capture"></button></div>
+            <div class="prop" data-for="consumer"><label for="remap-media" data-i18n="remap.function"></label><select id="remap-media"></select></div>
+            <div class="prop" data-for="mouse"><label for="remap-mouse" data-i18n="remap.button"></label><select id="remap-mouse"></select></div>
+            <div class="prop" data-for="macro"><label for="remap-macro" data-i18n="remap.macro"></label><select id="remap-macro"></select></div>
+            <div class="prop" data-for="macro"><label for="remap-play" data-i18n="remap.play"></label><select id="remap-play"></select></div>
+            <div class="prop" data-for="macro" id="remap-times-prop"><label for="remap-times" data-i18n="remap.times"></label><input type="number" id="remap-times" min="1"></div>
+          </div>
+        </div>
+      </div>
+      <footer class="bar">
+        <p class="note" data-i18n="remap.note"></p>
+        <button id="remap-reset" data-i18n="remap.reset"></button>
+        <button class="primary" id="remap-apply" data-device></button>
+      </footer>
+    </section>
+
+    <section class="page" data-page="macros" hidden>
+      <div class="inspector list">
+        <div class="pane">
+          <ol class="macro-list" id="macro-list"></ol>
+          <p class="muted" id="macro-none" data-i18n="macros.none"></p>
+          <button id="macro-add" data-i18n="macros.add"></button>
+        </div>
+        <div class="pane" id="macro-editor" hidden>
+          <div class="prop"><label for="macro-name" data-i18n="macros.name"></label><input type="text" id="macro-name" maxlength="40"></div>
+          <div class="prop"><span data-i18n="macros.append"></span>
+            <div class="row">
+              <button id="macro-record"></button>
+              <button data-click="left" data-i18n="mouse.left"></button>
+              <button data-click="right" data-i18n="mouse.right"></button>
+              <button data-click="middle" data-i18n="mouse.middle"></button>
+            </div>
+          </div>
+          <table class="steps" id="macro-steps">
+            <thead><tr><th data-i18n="macros.columnAction"></th><th data-i18n="macros.columnKey"></th><th data-i18n="macros.columnPause"></th><th></th></tr></thead>
+            <tbody></tbody>
+          </table>
+          <p class="muted" id="macro-no-steps" data-i18n="macros.noSteps"></p>
+        </div>
+      </div>
+      <footer class="bar">
+        <p class="note" data-i18n="macros.note"></p>
+        <button class="danger" id="macro-delete" data-i18n="macros.delete"></button>
+        <button class="primary" id="macros-apply" data-device data-i18n="macros.apply"></button>
+      </footer>
+    </section>
+
+    <section class="page" data-page="screen" hidden>
+      <div class="inspector preview">
+        <div class="pane">
+          <div class="screen"><img id="screen-preview" data-i18n-alt="screen.preview"></div>
+        </div>
+        <div class="pane">
+          <h2 data-i18n="screen.animation"></h2>
+          <div class="prop"><span data-i18n="screen.file"></span>
+            <label class="file"><input type="file" id="screen-file" accept="image/gif"><span id="screen-file-name" data-i18n="screen.choose"></span></label>
+          </div>
+          <p class="muted" data-i18n="screen.cropped"></p>
+          <div class="progress" id="screen-progress" hidden>
+            <progress id="screen-bar"></progress>
+            <span id="screen-progress-text"></span>
+          </div>
+        </div>
+      </div>
+      <footer class="bar">
+        <p class="note" data-i18n="screen.note"></p>
+        <button id="clock-sync" data-device data-i18n="screen.clock"></button>
+        <button class="primary" id="screen-apply" data-device data-usb-only data-i18n="screen.apply"></button>
+      </footer>
+    </section>
+
+    <section class="page" data-page="settings" hidden>
+      <div class="inspector">
+        <div class="pane settings">
+          <div class="group">
+            <h2 data-i18n="settings.keyboard"></h2>
+            <div class="prop"><label for="set-win" data-i18n="settings.win"></label><input type="checkbox" id="set-win"></div>
+            <div class="prop"><label for="set-alt-tab" data-i18n="settings.altTab"></label><input type="checkbox" id="set-alt-tab"></div>
+            <div class="prop"><label for="set-alt-f4" data-i18n="settings.altF4"></label><input type="checkbox" id="set-alt-f4"></div>
+            <div class="prop"><label for="set-fn" data-i18n="settings.fn"></label>
+              <select id="set-fn">
+                <option value="momentary" data-i18n="settings.fnMomentary"></option>
+                <option value="toggle" data-i18n="settings.fnToggle"></option>
+              </select>
+            </div>
+            <div class="prop"><label for="set-sleep" data-i18n="settings.sleep"></label>
+              <select id="set-sleep">
+                <option value="never" data-i18n="settings.sleepNever"></option>
+                <option value="oneMinute" data-i18n="settings.sleepOneMinute"></option>
+                <option value="fiveMinutes" data-i18n="settings.sleepFiveMinutes"></option>
+                <option value="thirtyMinutes" data-i18n="settings.sleepThirtyMinutes"></option>
+              </select>
+            </div>
+            <div class="prop"><label for="set-debounce" data-i18n="settings.debounce"></label><span class="range"><input type="range" id="set-debounce" min="1"><output></output></span></div>
+          </div>
+          <div class="group">
+            <h2 data-i18n="settings.app"></h2>
+            <div class="prop"><label for="app-language" data-i18n="settings.language"></label><select id="app-language"></select></div>
+            <div class="prop"><label for="app-theme" data-i18n="settings.theme"></label><select id="app-theme"></select></div>
+          </div>
+        </div>
+      </div>
+      <footer class="bar">
+        <p class="note" data-i18n="settings.note"></p>
+        <button class="primary" id="settings-apply" data-device data-i18n="settings.apply"></button>
+      </footer>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" hidden></div>
+</body>
+</html>
