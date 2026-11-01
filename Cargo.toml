@@ -6,6 +6,11 @@ default-members = ["crates/aula", "crates/aulactl"]
 
 [workspace.package]
 edition = "2024"
-license = "MIT"
+license = "GPL-3.0-or-later"
 repository = "https://github.com/DonAsako/AulaF75Driver"
 rust-version = "1.85"
+
+[workspace.dependencies]
+anyhow = "1"
+aula = { path = "crates/aula" }
+serde = { version = "1", features = ["derive"] }

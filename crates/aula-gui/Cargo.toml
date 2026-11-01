@@ -8,10 +8,10 @@ repository.workspace = true
 rust-version.workspace = true
 
 [build-dependencies]
-tauri-build = { version = "2", features = [] }
+tauri-build = "2"
 
 [dependencies]
-anyhow = "1"
-aula = { path = "../aula", features = ["gif", "serde"] }
-serde = { version = "1", features = ["derive"] }
-tauri = { version = "2", features = [] }
+anyhow.workspace = true
+aula = { workspace = true, features = ["gif", "serde"] }
+serde.workspace = true
+tauri = "2"

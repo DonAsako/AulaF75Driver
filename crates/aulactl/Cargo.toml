@@ -8,7 +8,7 @@ repository.workspace = true
 rust-version.workspace = true
 
 [dependencies]
-anyhow = "1"
-aula = { path = "../aula", features = ["gif"] }
+anyhow.workspace = true
+aula = { workspace = true, features = ["gif"] }
 chrono = { version = "0.4", default-features = false, features = ["clock"] }
 clap = { version = "4", features = ["derive"] }

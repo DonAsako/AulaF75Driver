@@ -73,4 +73,4 @@ confirmed on a keyboard; please keep that distinction when adding findings.
 
 ## License
 
-[MIT](LICENSE)
+[GPL-3.0-or-later](LICENSE)
